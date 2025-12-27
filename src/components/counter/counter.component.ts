@@ -1,0 +1,36 @@
+import type { ComponentDef } from '@softer-components/types';
+
+// Initial state definition
+const initialState = {
+  count: 0,
+};
+
+// Events type declaration
+type CounterEvents = {
+  incrementRequested: { payload: undefined };
+  decrementRequested: { payload: undefined };
+};
+
+export type CounterContract = {
+  state: typeof initialState;
+  events: CounterEvents;
+  values: { count: number };
+  children: Record<string, never>;
+};
+
+// Component definition
+export const counterComponentDef: ComponentDef<CounterContract> = {
+  initialState,
+  selectors: {
+    count: (state) => state.count,
+  },
+  uiEvents: ['decrementRequested', 'incrementRequested'],
+  updaters: {
+    incrementRequested: ({ state }) => {
+      state.count++;
+    },
+    decrementRequested: ({ state }) => {
+      state.count--;
+    },
+  },
+};
