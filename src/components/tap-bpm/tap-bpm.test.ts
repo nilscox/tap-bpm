@@ -28,62 +28,126 @@ describe('tap-bpm', () => {
     givenRootComponent(tapBpmComponentDef).thenExpect([]).bpm.toBeUndefined();
   });
 
-  it('no bpm after a single tap', () => {
-    givenRootComponent(tapBpmComponentDef)
-      .when({
+  describe('bpm', () => {
+    it('no bpm after a single tap', () => {
+      givenRootComponent(tapBpmComponentDef)
+        .when({
+          name: 'bpmTapped',
+          componentPath: [],
+          payload: undefined,
+        })
+        .thenExpect([])
+        .bpm.toBeUndefined();
+    });
+
+    it('bpm is 60 after two taps of 1000ms', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
         name: 'bpmTapped',
         componentPath: [],
         payload: undefined,
-      })
-      .thenExpect([])
-      .bpm.toBeUndefined();
-  });
+      });
 
-  it('bpm is 60 after two taps of 1000ms', () => {
-    const test = givenRootComponent(tapBpmComponentDef).when({
-      name: 'bpmTapped',
-      componentPath: [],
-      payload: undefined,
+      taps(test, [1000, 1000]);
+
+      test.thenExpect([]).bpm.toBe(60);
     });
 
-    taps(test, [1000, 1000]);
+    it('bpm is 100 after two taps of 600ms', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
 
-    test.thenExpect([]).bpm.toBe(60);
-  });
+      taps(test, [600]);
 
-  it('bpm is 100 after two taps of 600ms', () => {
-    const test = givenRootComponent(tapBpmComponentDef).when({
-      name: 'bpmTapped',
-      componentPath: [],
-      payload: undefined,
+      test.thenExpect([]).bpm.toBe(100);
     });
 
-    taps(test, [600]);
+    it('bpm is rounded', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
 
-    test.thenExpect([]).bpm.toBe(100);
-  });
+      taps(test, [601]);
 
-  it('bpm is rounded', () => {
-    const test = givenRootComponent(tapBpmComponentDef).when({
-      name: 'bpmTapped',
-      componentPath: [],
-      payload: undefined,
+      test.thenExpect([]).bpm.toBe(100);
     });
 
-    taps(test, [601]);
+    it('bpm is 100 after taps of 3x610ms and 1x570ms', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
 
-    test.thenExpect([]).bpm.toBe(100);
+      taps(test, [610, 610, 610, 570]);
+
+      test.thenExpect([]).bpm.toBe(100);
+    });
   });
 
-  it('bpm is 100 after taps of 3x610ms and 1x570ms', () => {
-    const test = givenRootComponent(tapBpmComponentDef).when({
-      name: 'bpmTapped',
-      componentPath: [],
-      payload: undefined,
+  describe('confidence', () => {
+    it('confidence is not defined when < 3 taps', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
+
+      taps(test, [600]);
+
+      test.thenExpect([]).confidence.toBeUndefined();
     });
 
-    taps(test, [610, 610, 610, 570]);
+    it('confidence is low when error > 20%', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
 
-    test.thenExpect([]).bpm.toBe(100);
+      taps(test, [100, 200, 300, 400]);
+
+      test.thenExpect([]).confidence.toBe('low');
+    });
+
+    it('confidence is medium when < 5 taps', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
+
+      taps(test, [600, 600, 600]);
+
+      test.thenExpect([]).confidence.toBe('medium');
+    });
+
+    it('confidence is medium when >= 5 taps and error >= 5%', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
+
+      taps(test, [100, 110, 120, 130]);
+
+      test.thenExpect([]).confidence.toBe('medium');
+    });
+
+    it('confidence is high when >= 5 taps and error < 5%', () => {
+      const test = givenRootComponent(tapBpmComponentDef).when({
+        name: 'bpmTapped',
+        componentPath: [],
+        payload: undefined,
+      });
+
+      taps(test, [600, 601, 602, 603]);
+
+      test.thenExpect([]).confidence.toBe('high');
+    });
   });
 });

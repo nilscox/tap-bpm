@@ -49,6 +49,18 @@ button {
     font-style: italic;
     font-size: 48px;
   }
+
+  &[data-confidence='low'] {
+    color: oklch(45.5% 0.188 13.697);
+  }
+
+  &[data-confidence='medium'] {
+    color: oklch(47.3% 0.137 46.201);
+  }
+
+  &[data-confidence='high'] {
+    color: oklch(43.2% 0.095 166.913);
+  }
 }
 
 .tap-button.tapped {
