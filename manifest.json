@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Tap BPM",
+  "short_name": "BPM",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "black",
+  "lang": "en"
+}

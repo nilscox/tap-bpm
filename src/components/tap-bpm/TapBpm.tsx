@@ -17,7 +17,7 @@ export function TapBpm({ path = '/' }: { path?: string }) {
   return (
     <div className="tap-bpm">
       <button
-        aria-label="Decrement value"
+        aria-label="Tap BPM button"
         aria-placeholder="Tap here"
         data-confidence={confidence}
         onClick={handleTap}

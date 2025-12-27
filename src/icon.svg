@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 24 24">
+  <g stroke="currentColor" stroke-linecap="round">
+    <line x1="8" y1="6" x2="6" y2="3" />
+    <line x1="12" y1="6" x2="12" y2="2" />
+    <line x1="16" y1="6" x2="18" y2="3" />
+
+    <line x1="8" y1="18" x2="6" y2="21" />
+    <line x1="12" y1="18" x2="12" y2="22" />
+    <line x1="16" y1="18" x2="18" y2="21" />
+  </g>
+
+  <text
+    x="12"
+    y="12"
+    dy=".35em"
+    fill="currentColor"
+    text-anchor="middle"
+    style="font-family: monospace; font-size: 8px; font-weight: bold"
+  >
+    BPM
+  </text>
+</svg>
